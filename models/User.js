@@ -1,3 +1,12 @@
+// Create a user schema to store user data
+
+// Personal info is straightforward and is required by the user 
+// in order to create an account
+
+// accType refers to the privilege status of the user, client only being
+// able to view ads and manage own account while affiliate accounts can
+// create, edit and delete new ads, while admin has admin privileges
+
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
@@ -13,7 +22,7 @@ const userSchema = Schema({
   accType: {
     type: String,
     required: true,
-    enum: ["client", "employer", "leasee"],
+    enum: ["client", "employer", "leasee", "admin"],
     default: "client",
   },
   isDeleted: { type: Boolean, required: true, default: false },
