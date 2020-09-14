@@ -46,3 +46,5 @@ userController.register(
     );
   }))
 );
+
+module.exports = userController;

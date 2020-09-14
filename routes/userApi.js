@@ -7,3 +7,11 @@
  * @route PUT api/users/me - Update user info
  * @route PUT api/users/me/password - Change Password
  */
+
+ /**
+  * @route POST api/users - Register
+  * @description Register a new user
+  * @access Public
+  */
+
+router.post('/register', userController.register);
