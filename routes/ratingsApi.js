@@ -1,0 +1,3 @@
+/** 
+ * @route POST api/ratings
+ */
