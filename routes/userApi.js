@@ -35,3 +35,5 @@ router.post(
   ]),
   userController.register
 );
+
+module.exports = router;

@@ -18,7 +18,7 @@ const userSchema = Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, select: false },
   emailVerificationCode: { type: String, select: false },
-  isEmailVerified: { type: Boolean, required: true, default: false },
+  isEmailVerified: { type: Boolean, required: true, default: true },
   accType: {
     type: String,
     required: true,

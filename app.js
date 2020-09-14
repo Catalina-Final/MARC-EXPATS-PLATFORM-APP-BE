@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log("ERROR", err.message);
+  console.log("ERROR", err);
   return utilsHelper.sendResponse(
     res,
     err.statusCode ? err.statusCode : 500,
