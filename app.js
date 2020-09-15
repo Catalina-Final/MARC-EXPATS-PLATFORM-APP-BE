@@ -14,6 +14,9 @@ app.use(cors());
 const mongoose = require("mongoose");
 const mongoURI = process.env.MONGODB_URI;
 
+const passport = require("passport");
+require("./helpers/passport");
+
 mongoose
   .connect(mongoURI, {
     // some options to deal with deprecated warning
@@ -24,6 +27,8 @@ mongoose
   })
   .then(() => console.log(`Mongoose connected to ${mongoURI}`))
   .catch((err) => console.log(err));
+
+  app.use(passport.initialize());
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -42,14 +47,25 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   console.log("ERROR", err);
-  return utilsHelper.sendResponse(
-    res,
-    err.statusCode ? err.statusCode : 500,
-    false,
-    null,
-    [{ message: err.message }],
-    null
-  );
+  if (err.isOperational) {
+    return utilsHelper.sendResponse(
+      res,
+      err.statusCode ? err.statusCode : 500,
+      false,
+      null,
+      { message: err.message },
+      err.errorType
+    );
+  } else {
+    return utilsHelper.sendResponse(
+      res,
+      err.statusCode ? err.statusCode : 500,
+      false,
+      null,
+      { message: err.message },
+      "Internal Server Error"
+    );
+  }
 });
 
 module.exports = app;
