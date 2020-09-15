@@ -22,7 +22,7 @@ const authMiddleware = require("../middlewares/authentication.js");
  */
 
 router.post(
-  "/register",
+  "/",
   validators.validate([
     body("surname", "Surname required").exists().notEmpty(),
     body("firstName", "First name required").exists().notEmpty(),

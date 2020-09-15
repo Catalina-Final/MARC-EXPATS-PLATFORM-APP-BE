@@ -6,7 +6,12 @@ router.get("/", function (req, res, next) {
   res.send({ status: "ok", data: "Hello World!" });
 });
 
-const userApi = require("./userApi")
+//  userApi
+const userApi = require("./userApi");
 router.use("/users", userApi);
+
+// authApi
+const authApi = require("./authApi");
+router.use("/auth", authApi);
 
 module.exports = router;
