@@ -25,7 +25,11 @@ mongoose
     useFindAndModify: false,
     useUnifiedTopology: true,
   })
-  .then(() => console.log(`Mongoose connected to ${mongoURI}`))
+  .then(() => {
+    console.log(`Mongoose connected to ${mongoURI}`);
+    // require("./testing/test");
+    // emailInternalHelper.createTemplatesIfNotExists();
+  })
   .catch((err) => console.log(err));
 
   app.use(passport.initialize());

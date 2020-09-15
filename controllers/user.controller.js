@@ -10,7 +10,7 @@ const userController = {};
 // Handle new user registration. Stores relevant data in User Model.
 
 userController.register = catchAsync(async (req, res, next) => {
-  let { surname, firstName, email, password, accType } = req.body;
+  let { surname, firstName, gender, email, password, accType } = req.body;
   let user = await User.findOne({ email });
   if (user)
     return next(new AppError(409, "User already exists", "Register Error"));
@@ -26,6 +26,7 @@ userController.register = catchAsync(async (req, res, next) => {
   user = await User.create({
     surname,
     firstName,
+    gender,
     email,
     password,
     accType,
