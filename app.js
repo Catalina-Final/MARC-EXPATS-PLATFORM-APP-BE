@@ -28,11 +28,11 @@ mongoose
   .then(() => {
     console.log(`Mongoose connected to ${mongoURI}`);
     // require("./testing/test");
-    // emailInternalHelper.createTemplatesIfNotExists();
+    require("./helpers/email.helper").emailInternalHelper.createTemplatesIfNotExists();
   })
   .catch((err) => console.log(err));
 
-  app.use(passport.initialize());
+app.use(passport.initialize());
 
 app.use(logger("dev"));
 app.use(express.json());

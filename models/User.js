@@ -1,6 +1,6 @@
 // Create a user schema to store user data
 
-// Personal info is straightforward and is required by the user 
+// Personal info is straightforward and is required by the user
 // in order to create an account
 
 // accType refers to the privilege status of the user, client only being
@@ -15,10 +15,11 @@ const Schema = mongoose.Schema;
 const userSchema = Schema({
   surname: { type: String, required: true },
   firstName: { type: String, required: true },
+  gender: { type: String, required: true, enum: ["male", "female", "other"] },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, select: false },
   emailVerificationCode: { type: String, select: false },
-  isEmailVerified: { type: Boolean, required: true, default: true },
+  isEmailVerified: { type: Boolean, required: true, default: false },
   accType: {
     type: String,
     required: true,

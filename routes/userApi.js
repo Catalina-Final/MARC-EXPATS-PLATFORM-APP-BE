@@ -16,7 +16,7 @@ const { body } = require("express-validator");
 const authMiddleware = require("../middlewares/authentication.js");
 
 /**
- * @route POST api/users 
+ * @route POST api/users
  * @description Register a new user
  * @access Public
  */
@@ -34,6 +34,19 @@ router.post(
       .isLength(6),
   ]),
   userController.register
+);
+
+/**
+ * @route POST api/users/verify_email
+ * @description Verify email of a new user
+ * @access Public
+ */
+router.post(
+  "/verify_email",
+  validators.validate([
+    body("code", "Invalid Verification Code").exists().notEmpty(),
+  ]),
+  userController.verifyEmail
 );
 
 module.exports = router;

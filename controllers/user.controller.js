@@ -4,6 +4,9 @@ const {
   sendResponse,
 } = require("../helpers/utils.helper");
 const User = require("../models/User.js");
+const utilsHelper = require("../helpers/utils.helper");
+const { emailHelper } = require("../helpers/email.helper");
+const FRONTEND_URL = process.env.FRONTEND_URL;
 const bcrypt = require("bcryptjs");
 const userController = {};
 
@@ -20,7 +23,7 @@ userController.register = catchAsync(async (req, res, next) => {
   password = await bcrypt.hash(password, salt);
 
   // Generate a random verifcation code for user email
-//   const emailVerificationCode = utilsHelper.generateRandomHexString(20);
+  const emailVerificationCode = utilsHelper.generateRandomHexString(20);
 
   // Creates the file in the schema
   user = await User.create({
@@ -30,11 +33,24 @@ userController.register = catchAsync(async (req, res, next) => {
     email,
     password,
     accType,
-    
+    emailVerificationCode,
+    emailVerified: false,
   });
 
   // Generate an access token for the user
   const accessToken = await user.generateToken();
+
+  const verificationURL = `${FRONTEND_URL}/verify/${emailVerificationCode}`;
+  const emailData = await emailHelper.renderEmailTemplate(
+    "verify_email",
+    { name: firstName, code: verificationURL },
+    email
+  );
+  if (!emailData.error) {
+    emailHelper.send(emailData);
+  } else {
+    return next(new AppError(500, emailData.error, "Create Email Error"));
+  }
 
   // Response sent to utilsHelper to confirm successful registration
   return sendResponse(
@@ -44,6 +60,35 @@ userController.register = catchAsync(async (req, res, next) => {
     { user, accessToken },
     null,
     "New User Registration Successful"
+  );
+});
+
+userController.verifyEmail = catchAsync(async (req, res, next) => {
+  const { code } = req.body;
+  let user = await User.findOne({
+    emailVerificationCode: code,
+  });
+  if (!user) {
+    return next(
+      new AppError(400, "Invalid Verification Code", "Verify Email Error")
+    );
+  }
+  user = await User.findByIdAndUpdate(
+    user._id,
+    {
+      $set: { isEmailVerified: true },
+      $unset: { emailVerificationCode: 1 },
+    },
+    { new: true }
+  );
+  const accessToken = await user.generateToken();
+  return sendResponse(
+    res,
+    200,
+    true,
+    { user, accessToken },
+    null,
+    "Create user successful"
   );
 });
 
