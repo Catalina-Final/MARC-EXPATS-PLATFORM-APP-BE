@@ -11,6 +11,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user.controller.js");
+const cvController = require("../controllers/cv.controller.js");
 const validators = require("../middlewares/validators.js");
 const { body } = require("express-validator");
 const authMiddleware = require("../middlewares/authentication.js");
@@ -48,5 +49,13 @@ router.post(
   ]),
   userController.verifyEmail
 );
+
+/**
+ * @route POST api/users/cv
+ * @description Submit user cv
+ * @access Public
+ */
+router.post("/cv", cvController.submitCv)
+
 
 module.exports = router;

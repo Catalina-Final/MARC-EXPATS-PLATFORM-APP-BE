@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const Template = require("../models/Template");
 const Mailgun = require("mailgun-js");
 const mailgun = new Mailgun({
