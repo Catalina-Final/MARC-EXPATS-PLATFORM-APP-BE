@@ -8,8 +8,8 @@ const authMiddleware = {};
 authMiddleware.loginRequired = (req, res, next) => {
   try {
     const tokenString = req.headers.authorization;
-    if (!tokenString)
-      return next(new AppError(401, "Token not found", "Validation Error"));
+    // if (!tokenString)
+    //   return next(new AppError(401, "Token not found", "Validation Error"));
     const token = tokenString.replace("Bearer ", "");
     jwt.verify(token, JWT_SECRET_KEY, (err, payload) => {
       if (err) {

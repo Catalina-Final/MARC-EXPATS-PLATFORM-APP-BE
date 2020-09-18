@@ -5,46 +5,35 @@ const CVSchema = Schema({
   cvOwner: { type: Schema.Types.ObjectId, required: false, ref: "Users" },
   contactInfo: Schema({
     fullName: { type: String, required: true },
-    dob: {type: String},
-    // age: {
-    //   type: Number,
-    //   validate: function (value) {
-    //     if (value > 80) {
-    //       throw new AppError(400, "Please select a valid age");
-    //     } else if (value < 18) {
-    //       throw new AppError(400, "Please select a valid age");
-    //     }
-    //   },
-    // },
+    dob: { type: Date, required: true },
     email: { type: String, required: true },
-    contactNo: { type: String },
-    nationality: { type: String, required: false },
+    contactNo: { type: Number, required: true },
+    nationality: { type: String, required: true },
     address: Schema({
-      streetNo: { type: String },
-      streetName: { type: String },
       ward: { type: String, required: true },
       district: { type: String, required: true },
       city: { type: String, required: true },
     }),
   }),
   tertiaryEducation: Schema({
-    degreeType: { type: String, required: false },
+    degreeType: { type: String, required: true },
     field: { type: String, required: true },
     establishment: { type: String, required: true },
     year: {
       type: Number,
-      required: false,
+      required: true,
       validate: function (value) {
         if (value > new Date().getFullYear())
           throw new AppError(400, "Please select a valid year");
       },
     },
   }),
-  experience: [ Schema({
+  experience: [
+    Schema({
       jobTitle: { type: String, required: true },
       employer: { type: String, required: true },
-      beginningTime: { type: Date, required: false },
-      endingTime: { type: Date, required: false },
+      beginningTime: { type: Date, required: true },
+      endingTime: { type: Date, required: true },
     }),
   ],
   certifications: [

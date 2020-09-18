@@ -5,24 +5,25 @@ const {
 } = require("../helpers/utils.helper");
 const CV = require("../models/CVs");
 // const utilsHelper = require("../helpers/utils.helper");
-const cvController = {}
+const cvController = {};
 
 cvController.submitCv = catchAsync(async (req, res, next) => {
-
   let { formData } = req.body;
-  console.log(formData.contactInfo)
+  const cvOwner = req.userId;
 
-  let cv = await CV.create(formData)
-//   let cv = await CV.findOne({ fullName });
+  console.log(formData);
 
-//   if (cv)
-//     return next(new AppError(409), "CV already exists", "Duplication Error");
+  let cv = await CV.create(formData, cvOwner);
+  //   let cv = await CV.findOne({ fullName });
 
-//   cv = await CV.create({
-//     ...req.body,
-//   });
+  //   if (cv)
+  //     return next(new AppError(409), "CV already exists", "Duplication Error");
 
-//   return sendResponse(res, 200, true, { cv }, null, "CV submit successfull");
+  //   cv = await CV.create({
+  //     ...req.body,
+  //   });
+
+  return sendResponse(res, 200, true, { cv }, null, "CV submit successfull");
 });
 
 module.exports = cvController;
