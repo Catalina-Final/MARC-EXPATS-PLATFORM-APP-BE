@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const JobSchema = Schema({
-  jobOwner: { type: Schema.Types.ObjectId, required: false, ref: "Users" },
+  jobOwnerId: { type: Schema.Types.ObjectId, required: false, ref: "Users" },
   jobOverview: Schema({
     jobTitle: { type: String, required: false },
     salary: { type: String, required: false },
@@ -13,13 +13,13 @@ const JobSchema = Schema({
   }),
   jobDetails: Schema({
     description: { type: String, required: false },
-    requiredQualifactions: { type: String, required: false },
+    requiredQualifications: { type: String, required: false },
     requiredSkills: { type: String, required: false },
     requiredCharacteristics: { type: String, required: false },
     incentives: { type: String, required: false },
     bonuses: { type: String, required: false },
   }),
-  jobBannerImage: Schema({ type: String, required: false }),
+  jobBannerImage: { type: String, required: false },
 });
 
 const Job = mongoose.model("Job", JobSchema);

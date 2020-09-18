@@ -14,4 +14,8 @@ router.use("/users", userApi);
 const authApi = require("./authApi");
 router.use("/auth", authApi);
 
+//  jobApi
+const jobApi = require("./jobApi");
+router.use("/users", jobApi);
+
 module.exports = router;
