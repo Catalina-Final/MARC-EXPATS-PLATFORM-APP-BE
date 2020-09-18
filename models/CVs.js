@@ -4,24 +4,24 @@ const Schema = mongoose.Schema;
 const CVSchema = Schema({
   cvOwner: { type: Schema.Types.ObjectId, required: false, ref: "Users" },
   contactInfo: Schema({
-    fullName: { type: String, required: true },
-    dob: { type: Date, required: true },
-    email: { type: String, required: true },
-    contactNo: { type: Number, required: true },
-    nationality: { type: String, required: true },
+    fullName: { type: String, required: false },
+    dob: { type: Date, required: false },
+    email: { type: String, required: false },
+    contactNo: { type: Number, required: false },
+    nationality: { type: String, required: false },
     address: Schema({
-      ward: { type: String, required: true },
-      district: { type: String, required: true },
-      city: { type: String, required: true },
+      ward: { type: String, required: false },
+      district: { type: String, required: false },
+      city: { type: String, required: false },
     }),
   }),
   tertiaryEducation: Schema({
-    degreeType: { type: String, required: true },
-    field: { type: String, required: true },
-    establishment: { type: String, required: true },
+    degreeType: { type: String, required: false },
+    field: { type: String, required: false },
+    establishment: { type: String, required: false },
     year: {
       type: Number,
-      required: true,
+      required: false,
       validate: function (value) {
         if (value > new Date().getFullYear())
           throw new AppError(400, "Please select a valid year");
@@ -30,15 +30,15 @@ const CVSchema = Schema({
   }),
   experience: [
     Schema({
-      jobTitle: { type: String, required: true },
-      employer: { type: String, required: true },
-      beginningTime: { type: Date, required: true },
-      endingTime: { type: Date, required: true },
+      jobTitle: { type: String, required: false },
+      employer: { type: String, required: false },
+      beginningTime: { type: Date, required: false },
+      endingTime: { type: Date, required: false },
     }),
   ],
   certifications: [
     Schema({
-      certTitle: { type: String, required: true },
+      certTitle: { type: String, required: false },
       dateOfCompletion: { type: Date, required: false },
     }),
   ],
