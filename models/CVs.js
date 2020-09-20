@@ -7,7 +7,7 @@ const CVSchema = Schema({
     fullName: { type: String, required: false },
     dob: { type: Date, required: false },
     email: { type: String, required: false },
-    contactNo: { type: Number, required: false },
+    contactNo: { type: String, required: false },
     nationality: { type: String, required: false },
     address: Schema({
       ward: { type: String, required: false },

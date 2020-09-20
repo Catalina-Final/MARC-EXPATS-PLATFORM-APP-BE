@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const faker = require("faker");
 const User = require("../models/User");
 const CV = require("../models/CVs");
+const Job = require("../models/Job")
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -34,7 +35,7 @@ const generateDatabase = async () => {
 
     const userNum = 10;
     const userTypes = ["client", "employer", "leasee"];
-    const genderTypes = ["male", "female", "custom"];
+    const genderTypes = ["male", "female", "other"];
     const degreeTypes = [
       "doctorate",
       "masters",
@@ -57,7 +58,7 @@ const generateDatabase = async () => {
       });
     }
 
-    console.log(users[1]._id);
+    // console.log(users[1]._id);
     console.log(`| Each user uploads a CV`);
     console.log("-------------------------------------------");
 
@@ -96,6 +97,40 @@ const generateDatabase = async () => {
         },
       });
     }
+
+    console.log(`| Generate job ads`);
+    console.log("-------------------------------------------");
+
+    let jobs = [];
+    const jobNum = 10;
+    const contracts = ["Full-time", "Part-time"];
+
+    for (let i = 0; i < jobNum; i++) {
+      await Job.create({
+        jobOverview: ({
+          jobTitle: faker.name.jobTitle(),
+          salary: "$" + getRandomInt(1000, 2000),
+          location: faker.address.county(),
+          contractType: contracts[getRandomInt(0, 1)],
+          employer: faker.company.companyName(),
+          startDate: faker.date.future(1, Date.now()),
+        }),
+        jobDetails: ({
+          description: faker.lorem.paragraphs(1),
+          requiredQualifications: faker.lorem.paragraphs(1),
+          requiredSkills: faker.lorem.paragraphs(1),
+          requiredCharacteristics: faker.lorem.paragraphs(1),
+          incentives: faker.hacker.phrase(),
+          bonuses: faker.hacker.phrase(),
+        }),
+        jobBannerImage:
+          "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.CiBWLOP31qWyqcs538Y8tAHaEK%26pid%3DApi&f=1",
+      }).then(function (job) {
+        console.log("created job " + job.jobOverview.jobTitle);
+        jobs.push(job);
+      });
+    }
+
     console.log("| Generate Data Done");
     console.log("-------------------------------------------");
   } catch (error) {
@@ -119,4 +154,4 @@ const main = async (resetDB = false) => {
   getRandomCV(1);
 };
 
-main(false);
+main(true);
