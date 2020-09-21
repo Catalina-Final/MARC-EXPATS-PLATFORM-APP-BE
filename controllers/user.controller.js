@@ -4,6 +4,7 @@ const {
   sendResponse,
 } = require("../helpers/utils.helper");
 const User = require("../models/User.js");
+const Employer = require("../models/Employer")
 const utilsHelper = require("../helpers/utils.helper");
 const { emailHelper } = require("../helpers/email.helper");
 const FRONTEND_URL = process.env.FRONTEND_URL;
@@ -62,6 +63,21 @@ userController.register = catchAsync(async (req, res, next) => {
     "New User Registration Successful"
   );
 });
+
+userController.updateEmployerDetails = catchAsync(async (req, res, next) => {
+  let { formData } = req.body;
+
+  let employerDetails = await Employer.create(formData);
+
+  return sendResponse(
+    res,
+    200,
+    true,
+    { employerDetails },
+    null,
+    "Employer details updated successfull"
+  );
+})
 
 userController.verifyEmail = catchAsync(async (req, res, next) => {
   const { code } = req.body;

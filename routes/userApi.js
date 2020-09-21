@@ -38,6 +38,13 @@ router.post(
 );
 
 /**
+ * @route POST api/users
+ * @description Register a new user
+ * @access Public
+ */
+router.post("/employer", userController.updateEmployerDetails);
+
+/**
  * @route POST api/users/verify_email
  * @description Verify email of a new user
  * @access Public
@@ -55,7 +62,6 @@ router.post(
  * @description Submit user cv
  * @access Public
  */
-router.post("/cv", cvController.submitCv)
-
+router.post("/cv", cvController.submitCv);
 
 module.exports = router;
