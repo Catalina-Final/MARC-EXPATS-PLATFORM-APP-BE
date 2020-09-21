@@ -15,7 +15,7 @@ const Schema = mongoose.Schema;
 const userSchema = Schema({
   surname: { type: String, required: true },
   firstName: { type: String, required: true },
-  gender: { type: String, required: true, enum: ["male", "female", "other"] },
+  gender: { type: String, required: false, enum: ["male", "female", "other"] },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, select: false },
   emailVerificationCode: { type: String, select: false },
@@ -27,6 +27,7 @@ const userSchema = Schema({
     default: "client",
   },
   isDeleted: { type: Boolean, required: true, default: false },
+  jobApplications: [{type: String}]
 });
 
 userSchema.methods.generateToken = async function () {

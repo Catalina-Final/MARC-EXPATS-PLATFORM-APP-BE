@@ -25,13 +25,8 @@ jobController.submitJobAd = catchAsync(async (req, res, next) => {
 });
 
 jobController.getJobAds = catchAsync(async (req, res, next) => {
-  let jobAds = { ...req.query };
+  const jobAds = await Job.find({});
 
-  console.log(res);
-
-  console.log(jobAds);
-
-  // const jobAds = await Job.
   return sendResponse(
     res,
     200,
@@ -39,6 +34,21 @@ jobController.getJobAds = catchAsync(async (req, res, next) => {
     { jobAds },
     null,
     "Fetch ads successfull"
+  );
+});
+
+jobController.getSingleJob = catchAsync(async (req, res, next) => {
+  const jobAd = await Job.findById(req.params.id);
+
+  if (!jobAd) return next(new AppError(404, "Job not found"));
+
+  return sendResponse(
+    res,
+    200,
+    true,
+    jobAd,
+    null,
+    "get single job ad successful"
   );
 });
 

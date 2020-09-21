@@ -28,4 +28,11 @@ router.post("/employer/submit", jobController.submitJobAd);
  */
 router.get("/", jobController.getJobAds)
 
+/**
+ * @route GET api/job/:id
+ * @description Get single job
+ * @access Public
+ */
+router.get("/:id", jobController.getSingleJob)
+
 module.exports = router;

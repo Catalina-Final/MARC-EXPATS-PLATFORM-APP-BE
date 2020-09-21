@@ -19,6 +19,7 @@ const JobSchema = Schema({
     incentives: { type: String, required: false },
     bonuses: { type: String, required: false },
   }),
+  applicants: [{ type: Schema.Types.ObjectId, ref: "CV"}],
   jobBannerImage: { type: String, required: false },
 });
 

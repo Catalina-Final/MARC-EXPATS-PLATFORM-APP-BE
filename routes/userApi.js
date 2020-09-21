@@ -45,6 +45,13 @@ router.post(
 router.post("/employer", userController.updateEmployerDetails);
 
 /**
+ * @route POST api/users
+ * @description Register a new user
+ * @access Public
+ */
+// router.post("/job/:id/submit", authMiddleware.loginRequired, userController.submitCv);
+
+/**
  * @route POST api/users/verify_email
  * @description Verify email of a new user
  * @access Public

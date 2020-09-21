@@ -9,7 +9,7 @@ const EmployerSchema = Schema({
   companyWebsite: { type: String, required: false },
   recruiterName: { type: String, required: false },
   recruiterRating: { type: String, required: false },
-  recruiterJobs: { type: String, required: false },
+  recruiterJobs: [{ type: Schema.Types.ObjectId, required: false, ref: "Job"}],
 });
 
 const Employer = mongoose.model("Employer", EmployerSchema);
