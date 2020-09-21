@@ -19,7 +19,7 @@ const jobController = require("../controllers/job.controller");
  * @description Submit a job ad
  * @access Public
  */
-router.post("/employer/submit", authMiddleware.loginRequired, jobController.submitJobAd);
+router.post("/employer/submit", jobController.submitJobAd);
 
 /**
  * @route GET api/jobs
