@@ -27,7 +27,7 @@ mongoose
   })
   .then(() => {
     console.log(`Mongoose connected to ${mongoURI}`);
-    require("./testing/test");
+    // require("./testing/test");
     require("./helpers/email.helper").emailInternalHelper.createTemplatesIfNotExists();
   })
   .catch((err) => console.log(err));

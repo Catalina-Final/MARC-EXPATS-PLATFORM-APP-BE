@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
 const validators = require("../middlewares/validators");
+const authMiddleware = require("../middlewares/authentication")
 const { body } = require("express-validator");
 const jobController = require("../controllers/job.controller");
 
@@ -15,10 +15,17 @@ const jobController = require("../controllers/job.controller");
  */
 
 /**
- * @route POST api/users/employer/job
+ * @route POST api/jobs/employer/submit
  * @description Submit a job ad
  * @access Public
  */
-router.post("/employer/job", jobController.submitJobAd);
+router.post("/employer/submit", authMiddleware.loginRequired, jobController.submitJobAd);
+
+/**
+ * @route GET api/jobs
+ * @description Get all job ads
+ * @access Public
+ */
+router.get("/", jobController.getJobAds)
 
 module.exports = router;

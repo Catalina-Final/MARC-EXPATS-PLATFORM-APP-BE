@@ -154,4 +154,4 @@ const main = async (resetDB = false) => {
   getRandomCV(1);
 };
 
-main(true);
+main(false);

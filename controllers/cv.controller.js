@@ -3,7 +3,7 @@ const {
   catchAsync,
   sendResponse,
 } = require("../helpers/utils.helper");
-const CV = require("../models/CVs");
+const CV = require("../models/CV");
 // const utilsHelper = require("../helpers/utils.helper");
 const cvController = {};
 
@@ -13,15 +13,15 @@ cvController.submitCv = catchAsync(async (req, res, next) => {
 
   console.log(formData);
 
-  let cv = await CV.create(formData, cvOwner);
-  //   let cv = await CV.findOne({ fullName });
+  // let cv = await CV.create(formData, cvOwner);
+  let cv = await CV.findOne({ cvOwner });
 
-  //   if (cv)
-  //     return next(new AppError(409), "CV already exists", "Duplication Error");
+  if (cv)
+    return next(new AppError(409), "CV already exists", "Duplication Error");
 
-  //   cv = await CV.create({
-  //     ...req.body,
-  //   });
+  cv = await CV.create({
+    ...req.body,
+  });
 
   return sendResponse(res, 200, true, { cv }, null, "CV submit successfull");
 });

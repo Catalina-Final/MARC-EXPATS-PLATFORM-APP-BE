@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const CVSchema = Schema({
-  cvOwner: { type: Schema.Types.ObjectId, required: false, ref: "Users" },
+  cvOwner: { type: Schema.Types.ObjectId, required: false, ref: "User" },
   contactInfo: Schema({
     fullName: { type: String, required: false },
     dob: { type: Date, required: false },

@@ -13,10 +13,10 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
   if (!user)
     return next(new AppError(400, "Invalid email or password", "Login Error"));
 
-  if (!user.isEmailVerified)
-    return next(
-      new AppError(406, "Please verify your email address", "Login Error")
-    );
+  // if (!user.isEmailVerified)
+  //   return next(
+  //     new AppError(406, "Please verify your email address", "Login Error")
+  //   );
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch)

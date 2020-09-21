@@ -16,6 +16,6 @@ router.use("/auth", authApi);
 
 //  jobApi
 const jobApi = require("./jobApi");
-router.use("/users", jobApi);
+router.use("/jobs", jobApi);
 
 module.exports = router;
