@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const JobSchema = Schema({
-  jobOwnerId: { type: Schema.Types.ObjectId, required: false, ref: "Users" },
+  jobOwnerId: { type: Schema.Types.ObjectId, required: false, ref: "Employer" },
   jobOverview: Schema({
     jobTitle: { type: String, required: false },
     salary: { type: String, required: false },
