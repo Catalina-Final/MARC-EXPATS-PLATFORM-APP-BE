@@ -23,11 +23,12 @@ const userSchema = Schema({
   accType: {
     type: String,
     required: true,
-    enum: ["client", "employer", "leasee", "admin"],
+    enum: ["client", "employer"],
     default: "client",
   },
   isDeleted: { type: Boolean, required: true, default: false },
-  jobApplications: [{type: String}]
+  jobApplications: [{type: String}],
+  cvId: { type: Schema.Types.ObjectId, required: false, ref: "CV"}
 });
 
 userSchema.methods.generateToken = async function () {

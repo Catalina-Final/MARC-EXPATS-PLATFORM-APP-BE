@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const faker = require("faker");
 const User = require("../models/User");
-const CV = require("../models/CVs");
-const Job = require("../models/Job")
+const CV = require("../models/CV");
+const Job = require("../models/Job");
+const Employer = require("../models/Employer")
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -29,12 +30,13 @@ const generateDatabase = async () => {
   try {
     await cleanData();
     let users = [];
+    let employers = [];
 
     console.log("| Create 10 users:");
     console.log("-------------------------------------------");
 
     const userNum = 10;
-    const userTypes = ["client", "employer", "leasee"];
+    const userTypes = ["client", "employer"];
     const genderTypes = ["male", "female", "other"];
     const degreeTypes = [
       "doctorate",
@@ -51,7 +53,7 @@ const generateDatabase = async () => {
         gender: genderTypes[getRandomInt(0, 2)],
         email: faker.internet.email(),
         password: "123456",
-        accType: userTypes[getRandomInt(0, 2)],
+        accType: userTypes[getRandomInt(0, 1)],
       }).then(function (user) {
         console.log("created new user " + user.firstName);
         users.push(user);
@@ -63,72 +65,88 @@ const generateDatabase = async () => {
     console.log("-------------------------------------------");
 
     for (let i = 0; i < users.length; i++) {
-      await CV.create({
-        cvOwner: users[i]._id,
-        contactInfo: {
-          fullName: faker.name.findName(),
-          age: getRandomInt(21, 60),
-          email: faker.internet.email(),
-          contactNo: faker.phone.phoneNumber(),
-          nationality: faker.address.country(),
-          address: {
-            streetNo: getRandomInt(1, 999),
-            streetName: faker.address.streetName(),
-            ward: faker.address.county(),
-            district: faker.address.county(),
-            city: faker.address.city(),
+      if (users[i].accType === "client") {
+        const cv = await CV.create({
+          cvOwner: users[i]._id,
+          contactInfo: {
+            fullName: users[i].firstName + " " + users[i].surname,
+            age: getRandomInt(21, 60),
+            email: users[i].email,
+            contactNo: faker.phone.phoneNumber(),
+            nationality: faker.address.country(),
+            address: {
+              streetNo: getRandomInt(1, 999),
+              streetName: faker.address.streetName(),
+              ward: faker.address.county(),
+              district: faker.address.county(),
+              city: faker.address.city(),
+            },
           },
-        },
-        tertiaryEducation: {
-          degreeType: degreeTypes[getRandomInt(0, 4)],
-          field: "education",
-          establishment: "University of Kek",
-          year: getRandomInt(1990, 2019),
-        },
-        experience: {
-          jobTitle: faker.name.title(),
-          employer: faker.company.companyName(),
-          beginningTime: faker.date.month() + " " + getRandomInt(2000, 2010),
-          endingTime: faker.date.month() + " " + getRandomInt(2011, 2019),
-        },
-        certifications: {
-          certTitle: "TEFL",
-          dateOfCompletion: faker.date.past(10, "2019-01-01"),
-        },
-      });
-    }
+          tertiaryEducation: {
+            degreeType: degreeTypes[getRandomInt(0, 4)],
+            field: "education",
+            establishment: "University of Kek",
+            year: getRandomInt(1990, 2019),
+          },
+          experience: {
+            jobTitle: faker.name.title(),
+            employer: faker.company.companyName(),
+            beginningTime: faker.date.month() + " " + getRandomInt(2000, 2010),
+            endingTime: faker.date.month() + " " + getRandomInt(2011, 2019),
+          },
+          certifications: {
+            certTitle: "TEFL",
+            dateOfCompletion: faker.date.past(10, "2019-01-01"),
+          },
+        });
 
-    console.log(`| Generate job ads`);
-    console.log("-------------------------------------------");
+        await User.findByIdAndUpdate(users[i]._id, { $set: { cvId: cv._id } });
+      } else if (users[i].accType === "employer") {
+        console.log(`| Generate job ads`);
+        console.log("-------------------------------------------");
 
-    let jobs = [];
-    const jobNum = 10;
-    const contracts = ["Full-time", "Part-time"];
+        let jobs = [];
+        const jobNum = 3;
+        const contracts = ["Full-time", "Part-time"];
 
-    for (let i = 0; i < jobNum; i++) {
-      await Job.create({
-        jobOverview: ({
-          jobTitle: faker.name.jobTitle(),
-          salary: "$" + getRandomInt(1000, 2000),
-          location: faker.address.county(),
-          contractType: contracts[getRandomInt(0, 1)],
-          employer: faker.company.companyName(),
-          startDate: faker.date.future(1, Date.now()),
-        }),
-        jobDetails: ({
-          description: faker.lorem.paragraphs(1),
-          requiredQualifications: faker.lorem.paragraphs(1),
-          requiredSkills: faker.lorem.paragraphs(1),
-          requiredCharacteristics: faker.lorem.paragraphs(1),
-          incentives: faker.hacker.phrase(),
-          bonuses: faker.hacker.phrase(),
-        }),
-        jobBannerImage:
-          "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.CiBWLOP31qWyqcs538Y8tAHaEK%26pid%3DApi&f=1",
-      }).then(function (job) {
-        console.log("created job " + job.jobOverview.jobTitle);
-        jobs.push(job);
-      });
+        for (let i = 0; i < jobNum; i++) {
+          await Job.create({
+            jobOverview: {
+              jobTitle: faker.name.jobTitle(),
+              salary: "$" + getRandomInt(1000, 2000),
+              location: faker.address.county(),
+              contractType: contracts[getRandomInt(0, 1)],
+              employer: faker.company.companyName(),
+              startDate: faker.date.future(1, Date.now()),
+            },
+            jobDetails: {
+              description: faker.lorem.paragraphs(1),
+              requiredQualifications: faker.lorem.paragraphs(1),
+              requiredSkills: faker.lorem.paragraphs(1),
+              requiredCharacteristics: faker.lorem.paragraphs(1),
+              incentives: faker.hacker.phrase(),
+              bonuses: faker.hacker.phrase(),
+            },
+            jobBannerImage:
+              "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.CiBWLOP31qWyqcs538Y8tAHaEK%26pid%3DApi&f=1",
+          }).then(function (job) {
+            console.log("created job " + job.jobOverview.jobTitle);
+            jobs.push(job);
+          });
+        }
+
+        const employer = await Employer.create({
+          recruiterId: users[i]._id,
+          companyName: faker.company.companyName(),
+          companyLocation: faker.address.city(),
+          companyLogo:
+            "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.CiBWLOP31qWyqcs538Y8tAHaEK%26pid%3DApi&f=1",
+          companyWebsite: faker.internet.url(),
+          recruiterName: users[i].firstName,
+          recruiterRating: getRandomInt(1, 4),
+          recruiterJobs: jobs.map((job) => job._id),
+        });
+      }
     }
 
     console.log("| Generate Data Done");

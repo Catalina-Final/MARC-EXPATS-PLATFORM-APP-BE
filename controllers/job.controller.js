@@ -46,7 +46,7 @@ jobController.getSingleJob = catchAsync(async (req, res, next) => {
     res,
     200,
     true,
-    jobAd,
+    jobAd,  
     null,
     "get single job ad successful"
   );
