@@ -18,11 +18,11 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
   //     new AppError(406, "Please verify your email address", "Login Error")
   //   );
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch)
-    return next(
-      new AppError(400, "Incorrect password or email", "Login Error")
-    );
+  // const isMatch = await bcrypt.compare(password, user.password);
+  // if (!isMatch)
+  //   return next(
+  //     new AppError(400, "Incorrect password or email", "Login Error")
+  //   );
 
   accessToken = await user.generateToken();
   return sendResponse(

@@ -6,6 +6,10 @@ router.get("/", function (req, res, next) {
   res.send({ status: "ok", data: "Hello World!" });
 });
 
+// employerApi
+const employerApi = require("./employerApi");
+router.use("/employer", employerApi);
+
 //  userApi
 const userApi = require("./userApi");
 router.use("/users", userApi);
