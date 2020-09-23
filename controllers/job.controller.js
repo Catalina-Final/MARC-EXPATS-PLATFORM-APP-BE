@@ -71,17 +71,20 @@ jobController.getSingleJob = catchAsync(async (req, res, next) => {
 });
 
 jobController.submitCvToEmployer = catchAsync(async (req, res, next) => {
+  console.log("sdassdsdasdasdsadsadsadsa======")
   const userId = req.userId;
   const jobId = req.params.id
   const user = await User.findById(userId)
   if(!user) return next(new AppError(404, "User not found"))
 
 // console.log(jobId)`
-  const job = await Job.findByIdAndUpdate(jobId, {$push: {applicants: user.cvId}}, {new:true})
+  const job = await Job.findByIdAndUpdate(jobId, {$addToSet: {applicants: user.cvId}}, {new:true})
+  const jobApplication = await User.findByIdAndUpdate(userId, {$addToSet: {jobApplications: jobId}}, {new: true})
 
+  console.log(jobApplication)
   // const job = await Job.findById(jobId)
   // console.log(job)
-
+  if(!jobApplication) return next(new AppError(404, "User not found"))
   if(!job) return next(new AppError(404, "Submit CV failed"))
 
 

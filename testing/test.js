@@ -3,7 +3,7 @@ const faker = require("faker");
 const User = require("../models/User");
 const CV = require("../models/CV");
 const Job = require("../models/Job");
-const Employer = require("../models/Employer")
+const Employer = require("../models/Employer");
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);

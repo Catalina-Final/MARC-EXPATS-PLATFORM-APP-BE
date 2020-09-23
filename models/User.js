@@ -27,7 +27,7 @@ const userSchema = Schema({
     default: "client",
   },
   isDeleted: { type: Boolean, required: true, default: false },
-  jobApplications: [{type: String}],
+  jobApplications: [{ type: Schema.Types.ObjectId, required: false, ref: "Job"}],
   cvId: { type: Schema.Types.ObjectId, required: false, ref: "CV"}
 });
 

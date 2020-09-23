@@ -4,7 +4,7 @@ const {
   sendResponse,
 } = require("../helpers/utils.helper");
 const User = require("../models/User.js");
-const Employer = require("../models/Employer")
+const Employer = require("../models/Employer");
 const utilsHelper = require("../helpers/utils.helper");
 const { emailHelper } = require("../helpers/email.helper");
 const FRONTEND_URL = process.env.FRONTEND_URL;
@@ -77,7 +77,7 @@ userController.updateEmployerDetails = catchAsync(async (req, res, next) => {
     null,
     "Employer details updated successfull"
   );
-})
+});
 
 userController.verifyEmail = catchAsync(async (req, res, next) => {
   const { code } = req.body;
@@ -108,4 +108,35 @@ userController.verifyEmail = catchAsync(async (req, res, next) => {
   );
 });
 
+userController.getCurrentUser = catchAsync(async (req, res, next) => {
+  const userId = req.userId;
+  const user = await User.findById(userId);
+  return sendResponse(
+    res,
+    200,
+    true,
+    { user },
+    null,
+    "Get current user successful"
+  );
+});
+
+userController.getUserJobApplications = catchAsync(async (req, res, next) => {
+  const jobApps = await User.findById(req.userId).populate("jobApplications");
+
+  if (!jobApps) return next(new AppError(404, "Job applications not found"));
+
+  return sendResponse(
+    res,
+    200,
+    true,
+    { jobApps },
+    null,
+    "Get current user applications successful"
+  );
+});
+
 module.exports = userController;
+
+// /users/me/cv
+// find User > User.findById(req.uesrId).populate("jobApplications")

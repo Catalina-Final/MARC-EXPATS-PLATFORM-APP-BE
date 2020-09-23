@@ -71,4 +71,18 @@ router.post(
  */
 router.post("/cv", cvController.submitCv);
 
+/**
+ * @route GET api/users/me
+ * @description Get current user info
+ * @access Login required
+ */
+router.get("/me", authMiddleware.loginRequired, userController.getCurrentUser);
+
+/**
+ * @route GET api/users/me
+ * @description Get current user info
+ * @access Login required
+ */
+router.get("/me/jobapps", authMiddleware.loginRequired, userController.getUserJobApplications);
+
 module.exports = router;
