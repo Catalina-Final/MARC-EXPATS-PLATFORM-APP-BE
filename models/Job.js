@@ -25,6 +25,7 @@ const JobSchema = Schema(
       bonuses: { type: String, required: false },
     }),
     applicants: [{ type: Schema.Types.ObjectId, ref: "CV" }],
+    isDeleted: { type: Boolean, default: false, select: false },
     jobBannerImage: { type: String, required: false },
   },
   { timestamps: true }

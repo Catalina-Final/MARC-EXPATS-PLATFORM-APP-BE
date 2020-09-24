@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const validators = require("../middlewares/validators");
 const authMiddleware = require("../middlewares/authentication")
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 const jobController = require("../controllers/job.controller");
 
 /**
@@ -48,6 +48,21 @@ router.get("/:id", jobController.getSingleJob)
  * @access Private
  */
 router.get("/full/:id", authMiddleware.loginRequired, jobController.getSingleJobWithApplicantDetails)
+
+
+/**
+ * @route DELETE api/jobs/:id
+ * @description Delete a job
+ * @access Login required
+ */
+router.delete(
+    "/:id",
+    authMiddleware.loginRequired,
+    validators.validate([
+      param("id").exists().isString().custom(validators.checkObjectId),
+    ]),
+    jobController.deleteJob
+  );
 
 
 module.exports = router;

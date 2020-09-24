@@ -100,7 +100,6 @@ jobController.submitCvToEmployer = catchAsync(async (req, res, next) => {
 
 jobController.getSingleJobWithApplicantDetails = catchAsync(
   async (req, res, next) => {
-    console.log("sdfsdg");
 
     const jobAd = await Job.findById(req.params.id).populate("applicants");
     if (!jobAd) return next(new AppError(404, "Job not found"));
@@ -108,5 +107,27 @@ jobController.getSingleJobWithApplicantDetails = catchAsync(
     return sendResponse(res, 200, true, jobAd, null, "Job ad found successful");
   }
 );
+
+jobController.deleteJob = catchAsync(async (req, res, next) => {
+  const recruiterId = req.userId;
+  const jobId = req.params.id;
+
+  console.log(recruiterId, jobId);
+
+  const job = await Job.findOneAndUpdate(
+    { _id: jobId, recruiterId: recruiterId },
+    { isDeleted: true },
+    { new: true }
+  );
+  if (!job)
+    return next(
+      new AppError(
+        400,
+        "Job not found or User not authorized",
+        "Delete Job Error"
+      )
+    );
+  return sendResponse(res, 200, true, null, null, "Delete Job successful");
+})
 
 module.exports = jobController;
