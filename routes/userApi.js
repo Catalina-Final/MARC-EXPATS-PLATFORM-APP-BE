@@ -85,4 +85,11 @@ router.get("/me", authMiddleware.loginRequired, userController.getCurrentUser);
  */
 router.get("/me/jobapps", authMiddleware.loginRequired, userController.getUserJobApplications);
 
+/**
+ * @route GET api/users/me/myjobs
+ * @description Get employers jobads
+ * @access Login required
+ */
+router.get("/me/myjobs", authMiddleware.loginRequired, userController.getMyJobs);
+
 module.exports = router;

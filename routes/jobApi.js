@@ -42,4 +42,12 @@ router.post("/:id/submitcv", authMiddleware.loginRequired, jobController.submitC
  */
 router.get("/:id", jobController.getSingleJob)
 
+/**
+ * @route GET api/job/full/:id
+ * @description Get single job with applicant details
+ * @access Private
+ */
+router.get("/full/:id", authMiddleware.loginRequired, jobController.getSingleJobWithApplicantDetails)
+
+
 module.exports = router;

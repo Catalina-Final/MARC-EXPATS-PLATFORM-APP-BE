@@ -136,6 +136,23 @@ userController.getUserJobApplications = catchAsync(async (req, res, next) => {
   );
 });
 
+userController.getMyJobs = catchAsync(async (req, res, next) => {
+  const userId = req.userId
+
+  const myJobs = await Employer.findOne({recruiterId: userId}).populate("recruiterJobs");
+
+  if (!myJobs) return next(new AppError(404, "Recruiter jobs not found"));
+
+  return sendResponse(
+    res,
+    200,
+    true,
+    myJobs.recruiterJobs,
+    null,
+    "Get current employer jobads successful"
+  );
+});
+
 module.exports = userController;
 
 // /users/me/cv
